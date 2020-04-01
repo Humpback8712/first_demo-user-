@@ -4,6 +4,7 @@ import re
 from user.models import User
 from django.shortcuts import reverse, redirect
 from django.views import View
+from django.contrib.auth import login, logout, authenticate
 
 
 # def register(request):
@@ -95,8 +96,58 @@ class RegisterView(View):
         )
         # 返回应答，返回首页
 
-        return redirect(reverse('user:index'))
+        return redirect(reverse('user:login'))
 
 
 def index(request):
     return render(request, 'index.html')
+
+
+class Login(View):
+    TEMPLATE = 'login.html'
+
+    def get(self, request):
+
+        error = request.GET.get('error', '')
+
+        if 'username' in request.COOKIES:
+            username = request.COOKIES['username']
+        else:
+            username = ''
+
+        return render(request, self.TEMPLATE, {'error': error, 'username': username})
+
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        remember = request.POST.get('remember')
+
+        exists = User.objects.filter(username=username).exists()
+
+        if not exists:
+            return redirect('/login?error=没有该用户')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            login(request, user)
+        else:
+            return redirect('/login?error=密码错误')
+
+        response = redirect('user:index')
+        # 判断是否需要记住用户名
+        print(remember)
+        print(username)
+        if remember == 'on':
+            response.set_cookie('username', username, max_age=7*24*3600)
+
+        return response
+
+
+class LogoutUser(View):
+
+    def get(self, request):
+
+        logout(request)
+
+        return redirect(reverse('user:login'))
