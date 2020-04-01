@@ -5,7 +5,7 @@
     <title>注册页面</title>
 </head>
 <body>
-    <form action="/user/register_handle" method="post">
+    <form action="/user/register/" method="post">
         {% csrf_token %}
         <ul>
             <li>
@@ -36,5 +36,6 @@
         </ul>
         <input type="submit" value="注册">
     </form>
+    {{ errmsg }}
 </body>
 </html>
