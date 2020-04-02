@@ -123,6 +123,7 @@ class Login(View):
         remember = request.POST.get('remember')
 
         exists = User.objects.filter(username=username).exists()
+        print(username, password)
 
         if not exists:
             return redirect('/login?error=没有该用户')

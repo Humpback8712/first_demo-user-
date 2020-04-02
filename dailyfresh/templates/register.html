@@ -2,40 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>注册页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    <link rel="stylesheet" href="/static/css/register.css">
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
 </head>
 <body>
-    <form action="/user/register/" method="post">
+
+    <form class="register-form" action="/user/register/" method="post">
         {% csrf_token %}
-        <ul>
-            <li>
-                <label>用户名</label>
-                <input type="text" name="username" id="username">
-                <span class="error_tip">提示信息</span>
-            </li>
-            <li>
-                <label>密码</label>
-                <input type="password" name="pwd" id="pwd">
-                <span class="error_tip">提示信息</span>
-            </li>
-            <li>
-                <label>确认密码</label>
-                <input type="password" name="cpwd" id="cpwd">
-                <span class="error_tip">提示信息</span>
-            </li>
-            <li>
-                <label>邮箱</label>
-                <input type="text" name="email" id="email">
-                <span class="error_tip">提示信息</span>
-            </li>
-            <li>
-                <input type="checkbox" name="allow" id="allow">
-                <label>同意用户协议</label>
-                <span class="error_tip2" >提示信息</span>
-            </li>
-        </ul>
-        <input type="submit" value="注册">
+        <h1>register</h1>
+
+        <div class="txtb">
+            <input type="text" placeholder="请输入用户名" name="username" id="username">
+            <span ></span>
+
+        </div>
+        <div class="txtb">
+            <input type="password" name="pwd" id="pwd"  placeholder="请输入密码">
+            <span ></span>
+
+        </div>
+        <div class="txtb">
+            <input type="password" placeholder="请确定密码" name="cpwd" id="cpwd">
+            <span ></span>
+
+        </div>
+        <div class="txtb">
+            <input type="text" name="email" id="email" placeholder="请输入邮箱">
+            <span ></span>
+
+        </div>
+
+        <input type="submit" class="logbtn" value="Register">
+        <input type="checkbox" name="allow" id="allow">
+        <label>同意用户协议</label>
+        <span class="error_tip2" ></span><br>
+        已有账号？<a href="{% url 'user:login' %}"> 去登陆</a>
     </form>
-    {{ errmsg }}
+
+
+    <script type="text/javascript">
+        $('.txtb input').on('focus', function(){
+            $(this).addClass('focus');
+
+        });
+        $('.txtb input').on('blur', function(){
+            if($(this.val() == ''))
+            $(this).addClass('blur');
+
+        });
+
+
+    </script>
+
+
 </body>
 </html>
